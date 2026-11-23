@@ -62,8 +62,8 @@ book dr-1 2026-12-01T10:00:00Z 2026-12-01T10:00:00Z  -> ERROR INVALID_INPUT: end
 
 | Check | Done? | Notes / changes made |
 |---|---|---|
-| Read `service.py` line by line; confirmed the overlap test and the lock scope | ☐ | |
-| Ran `python -m pytest -v` locally | ☐ | |
-| Repeated at least one mutation check | ☐ | |
-| Worked one overlap case out by hand (for example 09:00–09:30 vs 09:30–10:00) | ☐ | |
-| Reviewed the assumptions in NOTES.md and agreed or changed them | ☐ | |
+|Read `service.py` line by line; confirmed the overlap test and the lock scope | ☑ | Overlap uses strict `<` so touching slots are allowed; lock covers check+insert in book() and cancel() |
+| Ran `python -m pytest -v` locally | ☑ | Ran in GitHub Codespace: 34 passed in 0.14s |
+| Repeated at least one mutation check | ☑ | Changed `<` to `<=` in overlaps(): 3 failed (incl. test_adjacent_appointments_allowed); reverted with git checkout, 34 passed again |
+| Worked one overlap case out by hand (for example 09:00–09:30 vs 09:30–10:00) | ☑ | 09:00<10:00 is true but 09:30<09:30 is false → no overlap → booking allowed |
+| Reviewed the assumptions in NOTES.md and agreed or changed them | ☑ | Agreed; kept strict UTC-only rejection of naive/non-UTC timestamps |
